@@ -2,6 +2,8 @@
 
 An interactive browser-based tool for **direct** and **indirect age standardization**. No installation, no server, no dependencies.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20068581.svg)](https://doi.org/10.5281/zenodo.20068581)
+
 **[→ Open the dashboard](https://rajsubediresearch.github.io/age-standardization-dashboard/)**
 
 ---
@@ -27,6 +29,14 @@ python -m http.server 8000
 **Indirect standardization** — applies standard population rates to the study population's age distribution to compute expected events; outputs SMR = Observed / Expected with a Byar 95% CI.
 
 Both methods support editable age groups, custom rate labels (ASMR, CMR, incidence rate, etc.), and results downloadable as CSV, TXT, or HTML.
+
+---
+
+## Cite
+
+If you use this tool, please cite:
+
+> Subedi, R. (2025). *Age Standardization Dashboard* (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.20068581
 
 ---
 
