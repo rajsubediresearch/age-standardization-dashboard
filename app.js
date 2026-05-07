@@ -159,9 +159,17 @@ function renderIndirectTables() {
 
   /* Standard population table */
   const el = document.getElementById('std-pop-table');
+  const safeLabelInd = escHtml(studyRateLabel || 'ASMR');
   let html = `
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+      <label style="font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:0.07em;white-space:nowrap">Rate label:</label>
+      <input type="text" id="rate-label-input-ind" value="${safeLabelInd}"
+             oninput="studyRateLabel=this.value; document.getElementById('rate-col-header-ind').textContent=(this.value||'ASMR')+' (std)'"
+             placeholder="e.g. ASMR, CMR, Incidence rate"
+             style="flex:1;padding:4px 7px;border:1px solid var(--border);border-radius:5px;background:var(--surface);color:var(--text);font-size:12px;font-family:var(--font)" />
+    </div>
     <div class="ag-header-row" style="grid-template-columns:80px 1fr 1fr">
-      <span>Age group</span><span>Std rate /1k</span><span>Std pop (N)</span>
+      <span>Age group</span><span id="rate-col-header-ind">${safeLabelInd} (std)</span><span>Std pop (N)</span>
     </div>`;
   ageGroups.forEach((ag, i) => {
     html += `
@@ -325,7 +333,7 @@ function computeIndirect(n) {
       { label: 'Indirect std. rate',     value: indirectStdRate.toFixed(2),  unit: 'per 1,000'  },
     ],
     tableHead: `<tr>
-      <th>Age group</th><th>Std rate /1k</th><th>Study pop (N)</th><th>Expected events</th>
+      <th>Age group</th><th>${escHtml(studyRateLabel||'ASMR')} (std)</th><th>Study pop (N)</th><th>Expected events</th>
     </tr>`,
     tableBody,
     formula:
@@ -334,6 +342,7 @@ function computeIndirect(n) {
       '<strong>Indirect std. rate</strong> = SMR × crude standard rate',
     interpretation,
     method: 'indirect',
+    rateColName: studyRateLabel || 'ASMR',
     rows, smr, obs, expected, indirectStdRate, ciLow, ciHigh,
   });
 }
@@ -418,7 +427,8 @@ function buildTXTReport() {
       `${pad(r.ag,12)} | ${pad(r.pop,11)} | ${pad(r.rate.toFixed(2),14)} | ${pad((r.weight*100).toFixed(1)+'%',8)} | ${r.expected.toFixed(1)}`
     ));
   } else {
-    lines.push('Age group    | Std rate /1k | Study pop (N) | Expected events');
+    const rateColInd = d.rateColName || 'ASMR';
+    lines.push(`Age group    | ${rateColInd.padEnd(12)} (std) | Study pop (N) | Expected events`);
     d.rows.forEach(r => lines.push(
       `${pad(r.ag,12)} | ${pad(r.stdRate.toFixed(2),12)} | ${pad(r.studyN,13)} | ${r.exp.toFixed(2)}`
     ));
@@ -456,7 +466,8 @@ function downloadCSV() {
     rows.push(['Standard population (N)',      d.metrics[2].value]);
     rows.push(['Total expected events',        d.metrics[3].value]);
   } else {
-    rows.push(['Age group','Std rate per 1000','Study pop (N)','Expected events']);
+    const rateColIndCSV = d.rateColName || 'ASMR';
+    rows.push(['Age group', rateColIndCSV+' (std)', 'Study pop (N)','Expected events']);
     d.rows.forEach(r => rows.push([r.ag, r.stdRate.toFixed(2), r.studyN, r.exp.toFixed(2)]));
     rows.push([]);
     rows.push(['SMR',                         d.metrics[0].value]);
