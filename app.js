@@ -313,7 +313,8 @@ function renderDirectTables() {
 }
 
 function renderIndirectTables() {
-  document.getElementById('study-pop-section').style.display = 'block';
+  document.getElementById('study-pop-section').style.display = 'none';
+  document.getElementById('std-pop-label').textContent = 'Age-group data';
   document.getElementById('method-desc').innerHTML =
     `<div class="method-plain">
       <strong>What this does:</strong> Indirect standardization asks — <em>"How many events would we expect in the study population if it experienced the same age-specific rates as the standard population?"</em>
@@ -330,46 +331,32 @@ function renderIndirectTables() {
              placeholder="e.g. ASMR, CMR, Incidence rate"
              class="rate-label-input" />
     </div>
-    <div class="ag-header-row" style="grid-template-columns:80px 1fr 1fr">
+    <div class="ag-header-row" style="grid-template-columns:70px 1fr 1fr 1fr">
       <span>Age group</span>
       <span class="col-std"><span id="rate-col-header-ind">${safeLabelInd}</span><span class="pop-badge pop-badge-std">standard</span></span>
       <span class="col-std">Pop (N)<span class="pop-badge pop-badge-std">standard</span></span>
+      <span class="col-study">Pop (N)<span class="pop-badge pop-badge-study">study pop</span></span>
     </div>`;
   ageGroups.forEach((ag, i) => {
     if (hiddenRows.has(i)) return;
     html += `
-      <div class="ag-row" style="grid-template-columns:80px 1fr 1fr">
+      <div class="ag-row" style="grid-template-columns:70px 1fr 1fr 1fr">
         <input class="readonly" type="text" value="${escHtml(ag)}" readonly />
         <input type="number" min="0" step="0.01" value="${stdPop[i]?.rate ?? 0}"
                onchange="stdPop[${i}].rate=+this.value" class="input-std"/>
         <input type="number" min="0" value="${stdPop[i]?.pop ?? 0}"
                onchange="stdPop[${i}].pop=+this.value" class="input-std"/>
-      </div>`;
-  });
-  el.innerHTML = html;
-
-  const el2 = document.getElementById('study-pop-table');
-  let html2 = `
-    <div class="ag-header-row" style="grid-template-columns:80px 1fr">
-      <span>Age group</span>
-      <span class="col-study">Pop (N)<span class="pop-badge pop-badge-study">study pop</span></span>
-    </div>`;
-  ageGroups.forEach((ag, i) => {
-    if (hiddenRows.has(i)) return;
-    html2 += `
-      <div class="ag-row" style="grid-template-columns:80px 1fr">
-        <input class="readonly" type="text" value="${escHtml(ag)}" readonly />
         <input type="number" min="0" value="${studyPop[i]?.pop ?? 0}"
                onchange="studyPop[${i}].pop=+this.value" class="input-study"/>
       </div>`;
   });
-  html2 += `
+  html += `
     <div class="obs-block">
       <div class="section-label">Observed events in study population (total)</div>
       <input type="number" id="indirect-obs-val" class="obs-input"
              min="0" value="${DEFAULTS.indirect.studyObs}" />
     </div>`;
-  el2.innerHTML = html2;
+  el.innerHTML = html;
 }
 
 /* ============================================================
