@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Standardization Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div>
+      <h1 class="site-title">Age Standardization Dashboard</h1>
+      <p class="site-sub">Direct &amp; Indirect methods — for teaching and learning</p>
+    </div>
+    <a href="https://github.com/rajsubediresearch/age-standardization-dashboard" class="header-link" target="_blank">View on GitHub ↗</a>
+  </div>
+</header>
+
+<main class="app-shell">
+  <div class="app">
+
+    <!-- LEFT PANEL -->
+    <aside class="left-panel">
+
+      <div class="panel-intro">
+        <p class="panel-sub">Choose a method, edit the data (or use the sample defaults), then click <strong>Compute</strong>.</p>
+      </div>
+
+      <!-- Method toggle -->
+      <div class="form-block">
+        <div class="section-label">Method</div>
+        <div class="method-toggle">
+          <button class="method-btn active" onclick="setMethod('direct')" id="btn-direct">
+            Direct standardization
+          </button>
+          <button class="method-btn" onclick="setMethod('indirect')" id="btn-indirect">
+            Indirect standardization
+          </button>
+        </div>
+      </div>
+
+      <!-- Method description -->
+      <div id="method-desc" class="formula-box"></div>
+
+      <!-- Age groups -->
+      <div class="form-block">
+        <div class="block-header">
+          <div class="section-label">Age groups</div>
+          <button class="btn-small" onclick="addAgeGroup()">+ add row</button>
+        </div>
+        <div class="card">
+          <div id="ag-list"></div>
+        </div>
+      </div>
+
+      <!-- Standard population -->
+      <div class="form-block" id="std-pop-section">
+        <div class="section-label" id="std-pop-label">Standard population</div>
+        <div class="card">
+          <div id="std-pop-table"></div>
+        </div>
+      </div>
+
+      <!-- Study population (indirect only) -->
+      <div class="form-block" id="study-pop-section" style="display:none">
+        <div class="section-label" id="study-pop-label">Study population</div>
+        <div class="card">
+          <div id="study-pop-table"></div>
+        </div>
+      </div>
+
+      <!-- Error message -->
+      <div id="error-msg" class="error-box" style="display:none"></div>
+
+      <!-- Actions -->
+      <button class="compute-btn" onclick="compute()">Compute →</button>
+      <button class="reset-btn" onclick="loadDefaults()">↺ Reset to sample data</button>
+
+    </aside>
+
+    <!-- RIGHT PANEL -->
+    <section class="right-panel" id="right-panel">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">∑</div>
+        <div class="empty-title">Configure and compute</div>
+        <p class="empty-sub">Fill in the left panel and click <strong>Compute</strong> to see age-standardized results here.</p>
+      </div>
+      <div id="results" style="display:none"></div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>Age Standardization Dashboard &mdash; open source, for educational use. No data leaves your browser.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
