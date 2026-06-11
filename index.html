@@ -44,10 +44,21 @@
       <!-- Method description -->
       <div id="method-desc" class="formula-box"></div>
 
+      <!-- Age group preset selector -->
+      <div class="form-block">
+        <div class="section-label">Age group scheme</div>
+        <select id="preset-select" class="preset-select">
+          <!-- populated by JS -->
+        </select>
+      </div>
+
       <!-- Age groups -->
       <div class="form-block">
         <div class="block-header">
-          <div class="section-label">Age groups</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div class="section-label" style="margin-bottom:0">Age groups</div>
+            <span id="hidden-count" class="hidden-badge" style="display:none"></span>
+          </div>
           <button class="btn-small" onclick="addAgeGroup()">+ add row</button>
         </div>
         <div class="card">
@@ -57,7 +68,7 @@
 
       <!-- Standard population -->
       <div class="form-block" id="std-pop-section">
-        <div class="section-label" id="std-pop-label">Standard population</div>
+        <div class="section-label" id="std-pop-label">Standard population &amp; study rates</div>
         <div class="card">
           <div id="std-pop-table"></div>
         </div>
@@ -76,7 +87,13 @@
 
       <!-- Actions -->
       <button class="compute-btn" onclick="compute()">Compute →</button>
-      <button class="reset-btn" onclick="loadDefaults()">↺ Reset to sample data</button>
+
+      <div class="reset-row">
+        <button class="reset-btn" onclick="resetAgeGroupsOnly()" title="Restore age group labels from the selected scheme, keeping your rates">↺ Reset age groups</button>
+        <button class="reset-btn" onclick="loadDefaults()" title="Restore everything to sample data">↺ Reset all</button>
+      </div>
+
+      <button class="undo-btn" id="undo-btn" onclick="undo()" disabled>↩ Undo last change</button>
 
     </aside>
 
